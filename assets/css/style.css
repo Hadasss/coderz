@@ -12,18 +12,22 @@
 
 body {
   background-color: #b19f9e;
+  font-size: 150%;
+  font-family: "Abel";
 }
 
 /* TODO make a border class and assign it to all relevant elements */
 
 header {
+  margin: 10px;
   padding: 35px;
   display: flex;
   justify-content: space-between;
+  font-family: "Oswald";
 }
 
 .quiz-container {
-  height: 50vh;
+  height: 60vh;
   margin: 15px;
   padding: 50px;
   background-color: white;
@@ -39,15 +43,25 @@ p {
 }
 
 .btn {
-  margin: 50px;
+  margin: 40px;
   padding: 7px;
   background-color: #479761;
   border-radius: 10px;
   font-size: 18px;
   font-weight: bold;
   box-shadow: 3px 3px 6px grey;
+  font-family: "Abel";
 }
 
-.hidden {
-  display: none;
+.answers {
+  padding: 5px;
+  margin: 15px;
+  background-color: #a16e83;
+  color: white;
+  text-align: left;
+  border-radius: 15px;
+}
+
+.answers:hover {
+  background-color: #cebc81;
 }

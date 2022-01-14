@@ -1,45 +1,48 @@
-// code quiz
 const quizContainer = document.querySelector(".quiz-container");
 const title = document.querySelector(".title");
 let time = document.querySelector(".time");
 let highScores = document.querySelector(".high-scores");
 let questionContainer = document.querySelector(".question");
-let answerContainer = document.querySelector(".answer-container");
+const answerContainer = document.querySelector(".answer-container");
+const allAnswers = document.querySelector(".all-answers");
 let feedback = document.querySelector(".feedback");
 const startBtn = document.querySelector(".start");
+const questionBox = document.querySelector(".question-box");
 highScores = [];
-let counter = 10;
+
+let counter = 200;
 
 const questionsArr = [
   {
-    question: "Which type of JavaScript language is",
+    questionText: "Which type of language is Javascript?",
     choices: ["Object-Oriented", "Object-Based", "Low-level", "High-level"],
-    answer: 1,
+    answer: "Object-Based",
   },
   {
-    question: "In JavaScript the x===y statement implies that:",
+    questionText: "In JavaScript the x===y statement implies that:",
     choices: [
       "Both x and y are equal in value, type and reference address as well",
       "Both are x and y are equal in value only",
       "Both are equal in the value and data type",
       "Both are not same at all",
     ],
-    answer: 2,
+    answer: "Both are equal in the value and data type",
   },
 
   {
-    question: "In JavaScript, what is a block of statement?",
+    questionText: "In JavaScript, what is a block of statement?",
     choices: [
       "Conditional block",
       "block that combines a number of statements into a single compound statement",
       "both conditional block and a single statement",
       "block that contains a single statement",
     ],
-    answer: 1,
+    answer:
+      "block that combines a number of statements into a single compound statement",
   },
 
   {
-    question:
+    questionText:
       "When interpreter encounters an empty statements, what it will do:",
     choices: [
       "Shows a warning",
@@ -47,17 +50,17 @@ const questionsArr = [
       "Throws an error",
       "Ignores the statements",
     ],
-    answer: 3,
+    answer: "Ignores the statements",
   },
 
   {
-    question: "The 'function' and 'var' are known as:",
+    questionText: "The 'function' and 'var' are known as:",
     choices: ["Keywords", "Data types", "Declaration statements", "Prototypes"],
-    answer: 2,
+    answer: "Declaration statements",
   },
 
   {
-    question:
+    questionText:
       "Which of the following variables takes precedence over the others if the names are the same?",
     choices: [
       "Global variable",
@@ -65,36 +68,36 @@ const questionsArr = [
       "The two of the above",
       "None of the above",
     ],
-    answer: 1,
+    answer: "The local element",
   },
 
   {
-    question:
+    questionText:
       "Which one of the following is the correct way for calling the JavaScript code?",
     choices: ["Preprocessor", "Triggering Event", "RMI", "Function/Method"],
-    answer: 3,
+    answer: "Function/Method",
   },
 
   {
-    question: "Which of the following type of a variable is volatile?",
+    questionText: "Which of the following type of a variable is volatile?",
     choices: [
       "Mutable variable",
       "Dynamic variable",
       "Volatile variable",
       "Immutable variable",
     ],
-    answer: 0,
+    answer: "Mutable variable",
   },
 
   {
-    question:
+    questionText:
       "Which of the following number object function returns the value of the number?",
     choices: ["toString()", "valueOf()", "toLocaleString()", "toPrecision()"],
-    answer: 1,
+    answer: "valueOf()",
   },
 
   {
-    question:
+    questionText:
       "In the JavaScript, which one of the following is not considered as an error:",
     choices: [
       "Syntax error",
@@ -102,19 +105,16 @@ const questionsArr = [
       "Division by zero",
       "Missing of Bracket",
     ],
-    answer: 2,
+    answer: "Division by zero",
   },
 ];
-
-// TODO create startQuiz function to be called onclick and display questions and start countdown
 
 const startQuiz = function () {
   console.log("button clicked");
 
-  // TODO hide title dive to display quiz
-  //   title.className(".hidden");
+  title.remove();
 
-  // timer
+  // countdown timer
   const countdown = setInterval(function () {
     time.textContent = `Time: ${counter}`;
     if (counter > 0) {
@@ -124,32 +124,70 @@ const startQuiz = function () {
       const timeoutMsg = document.createElement("h3");
       timeoutMsg.textContent = "You're out of time!";
       quizContainer.appendChild(timeoutMsg);
-      const againBtn = document.createElement("button");
-      againBtn.textContent = "Try Again!";
-      againBtn.className = "btn";
-      quizContainer.appendChild(againBtn);
+
+      endGame();
     }
   }, 1000);
 
-  // display question and possible answers
-  for (let i = 0; i < questionsArr.length; i++) {
-      
-  }
+  displayQuestions();
+};
 
-  // when answer is clicked >> display correct/incorrect
-  // if incorrect >> take time off timer
-  // when all questions are answeres || timer = 0 >> endGame();
+// display question and possible answers
+const displayQuestions = function () {
+  for (let i = 0; i < questionsArr.length; i++) {
+    let questionTitle = document.createElement("h3");
+    questionTitle.textContent = questionsArr[i].questionText;
+    questionContainer.appendChild(questionTitle);
+
+    for (let j = 0; j < questionsArr[i].choices.length; j++) {
+      var answerChoice = document.createElement("li");
+      answerChoice.className = "answers";
+      answerChoice.textContent = questionsArr[i].choices[j];
+
+      var clickedAnswer = answerChoice.setAttribute(
+        "id",
+        questionsArr[i].choices[j]
+      );
+      answerContainer.appendChild(answerChoice);
+    }
+    // BUG loop will not continue iterating
+
+    answerContainer.addEventListener("click", function (event) {
+      answerChoice = event.target;
+      console.log(event.target);
+
+      if (answerChoice.id == questionsArr[i].answer) {
+        // display correct
+        feedback = document.createElement("h3");
+        feedback.textContent = "Correct!";
+        answerContainer.appendChild(feedback);
+        // TODO move on to next question
+        // questionBox.remove();
+      } else {
+        // display incorrect
+        feedback = document.createElement("h3");
+        feedback.textContent = "Wrong!";
+        answerContainer.appendChild(feedback);
+        // take time off counter
+        counter -= 20;
+        // TODO move on to next question
+        // questionBox.remove();
+      }
+      // BUG feedback will display multiple times if clicked. will be fixed on move to next question
+    });
+
+    break;
+  }
 
   endGame();
 };
 
-// TODO write an endGame function to display score, save initials and store score
-
+// endGame function
 const endGame = function () {
-  // display current score
-  // save initials >> submit (preventDefault)
+  // TODO display current score
+  
+  // TODO save initials >> submit (preventDefault)
+  // TODO create an object and store high scores into localStorage
 };
-
-// TODO create an object to store high scores into localStorage
 
 startBtn.addEventListener("click", startQuiz);
