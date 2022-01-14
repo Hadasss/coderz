@@ -9,18 +9,28 @@
   </head>
   <body>
     <header>
-      <div class="high-scores">View high scores</div>
-      <div class="countdown">Time:</div>
+      <div class="high-scores">
+        <h4>View high scores</h4>
+      </div>
+      <div class="countdown">
+        <h3 class="time">Time:</h3>
+      </div>
     </header>
 
     <main class="quiz-container">
-      <div class="title"></div>
+      <div class="title visible">
+        <h2>Welcome to the Coding Quiz Challenge!</h2>
+        <p>
+          Answer 10 questions and show off your awesome Jacascript knowledge. Do
+          you think you can beat the countdown? Give it your best shot!
+        </p>
+
+        <button class="start btn">Start Quiz</button>
+      </div>
       <div class="question"></div>
 
       <div class="all-answers">
-        <ol class="answer-container">
-          <li class="answer"></li>
-        </ol>
+        <ol class="answer-container"></ol>
       </div>
 
       <div class="feedback"></div>
