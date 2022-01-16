@@ -9,7 +9,6 @@ let feedback = document.querySelector(".feedback");
 const startBtn = document.querySelector(".start");
 const questionBox = document.querySelector(".question-box");
 highScores = [];
-
 let counter = 200;
 
 const questionsArr = [
@@ -161,6 +160,7 @@ const displayQuestions = function () {
         feedback = document.createElement("h3");
         feedback.textContent = "Correct!";
         answerContainer.appendChild(feedback);
+
         // TODO move on to next question
         // questionBox.remove();
       } else {
@@ -185,9 +185,13 @@ const displayQuestions = function () {
 // endGame function
 const endGame = function () {
   // TODO display current score
-  
   // TODO save initials >> submit (preventDefault)
   // TODO create an object and store high scores into localStorage
+};
+
+const loadHighscore = function () {
+  // TODO get scores from localStorage
+  // TODO convert from string to objects
 };
 
 startBtn.addEventListener("click", startQuiz);
