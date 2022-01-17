@@ -6,12 +6,15 @@ let feedback = document.querySelector(".feedback");
 const startBtn = document.querySelector(".start");
 const questionBox = document.querySelector(".question-box");
 const allAnswers = document.querySelector(".all-answers");
-const scores = [];
+const userInitials = document.querySelector(".user-initials");
+let userInput = document.querySelector(".user-input");
+const btnSave = document.querySelector(".save");
+let scores = [];
 let currScore = "";
 let countdown = "";
 let counter = 200;
 let questionIndex = 0;
-var questionsArr = [
+const questionsArr = [
   {
     questionText: "Which type of language is Javascript?",
     choices: ["Object-Oriented", "Object-Based", "Low-level", "High-level"],
@@ -107,7 +110,6 @@ var questionsArr = [
   //     answer: "Division by zero",
   //   },
 ];
-
 let questionTitle = document.querySelector(".question");
 
 const startQuiz = function () {
@@ -156,7 +158,7 @@ const displayQuestions = function () {
       "id",
       currQuestion.choices[i]
     );
-    console.log(currQuestion.choices[i]);
+
     answerContainer.appendChild(answerChoice);
   }
   answerContainer.addEventListener("click", function (event) {
@@ -182,7 +184,6 @@ const displayQuestions = function () {
     // BUG multiple clicks on answers multiplies number of answers
 
     const displayNextQuestion = setTimeout(function () {
-      console.log(currQuestion);
       if (questionIndex < questionsArr.length) {
         questionContainer.remove();
         answerContainer.remove();
@@ -190,7 +191,7 @@ const displayQuestions = function () {
       } else {
         endGame();
       }
-    }, 3000);
+    }, 2000);
   });
 };
 
@@ -200,27 +201,59 @@ const endGame = function () {
   clearInterval(countdown);
   // TODO set a conditional for when player loses - out of time
 
-  // TODO remove question and answers
+  // remove question and answers
   questionBox.remove();
   allAnswers.remove();
-  // TODO display current score
+  // display current score
   currScore = counter;
   let endMessage = document.createElement("h3");
   endMessage.textContent = `Game Over. Your score is ${counter}. See if you made it to the top 10 scores. `;
   quizContainer.appendChild(endMessage);
-  // TODO save initials >> submit (preventDefault)
-  // TODO create an object and store high scores into localStorage
+  getUserInitials();
+  return currScore;
+};
+
+const saveScore = function (event) {
+  event.preventDefault();
+  let score = {
+    initials: userInput.value,
+    score: currScore,
+  };
+  scores.push(score);
+  console.log(scores);
+
+  localStorage.setItem("scores", JSON.stringify(scores));
+  //   console.log(scoreStr);
+  //   let scoresParsed = JSON.parse(localStorage.getItem("scores"));
+  //   console.log(scoresParsed);
+
+  // TODO push current score to scores array
+  // TODO check if score is in top 10 scores
+};
+
+const getUserInitials = function () {
+  if (userInitials.className === "hidden") {
+    userInitials.className.remove("hidden");
+    userInitials.className("visible");
+    // TODO clear form
+    // document.querySelector("form").reset();
+    // TODO save initials >> submit (preventDefault)
+    saveScore();
+    // TODO create an object and store high scores into localStorage
+  }
 };
 
 const loadHighscore = function () {
-  console.log("highscores clicked!");
+  console.log("high scores clicked!");
   // TODO clear the quizContainer
   // TODO move start quiz button to a different location? or find other place to display scores
-  // TODO add h2 title for high scores
   // TODO get scores from localStorage
+
   // TODO convert from string to objects
 };
 
 startBtn.addEventListener("click", startQuiz);
 
 highScores.addEventListener("click", loadHighscore);
+
+btnSave.addEventListener("click", saveScore);

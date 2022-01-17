@@ -27,6 +27,7 @@ header {
 }
 
 .quiz-container {
+  overflow: auto;
   height: 60vh;
   margin: 15px;
   padding: 50px;
@@ -64,4 +65,17 @@ p {
 
 .answers:hover {
   background-color: #cebc81;
+}
+
+.user-initials {
+  padding: 7px;
+  border-radius: 25px;
+}
+
+.visible {
+  display: block;
+}
+
+.hidden {
+  display: none;
 }
