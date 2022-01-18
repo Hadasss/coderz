@@ -79,3 +79,21 @@ p {
 .hidden {
   display: none;
 }
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.scores-board {
+  flex-direction: column;
+}
+
+.score-title {
+  padding: 10px;
+}
+
+.score-div {
+  display: flex;
+  justify-content: space-around;
+}
