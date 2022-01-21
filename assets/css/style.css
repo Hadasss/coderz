@@ -5,18 +5,14 @@
   padding: 0;
 }
 
-/* colors:
-#cebc81
-#a16e83
-*/
-
 body {
   background-color: #b19f9e;
   font-size: 150%;
   font-family: "Abel";
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
 }
-
-/* TODO make a border class and assign it to all relevant elements */
 
 header {
   margin: 10px;
@@ -27,8 +23,10 @@ header {
 }
 
 .quiz-container {
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
   height: 60vh;
+  align-items: center;
   margin: 15px;
   padding: 50px;
   background-color: white;
@@ -36,6 +34,12 @@ header {
   border-radius: 15px;
   text-align: center;
   box-shadow: 3px 3px 7px black;
+}
+
+.answer-box {
+  flex-direction: row;
+  width: 70%;
+  justify-content: center;
 }
 
 h2,

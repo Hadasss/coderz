@@ -1,7 +1,7 @@
 const quizContainer = document.querySelector(".quiz-container");
 const title = document.querySelector(".title");
 let time = document.querySelector(".time");
-let highScores = document.querySelector(".high-scores");
+let highScores = document.querySelector("#high-scores");
 let feedback = document.querySelector(".feedback");
 const startBtn = document.querySelector(".start");
 const questionBox = document.querySelector(".question-box");
@@ -19,7 +19,7 @@ if (localStorage.getItem("scores")) {
 }
 let currScore = "";
 let countdown = "";
-let counter = 200;
+let counter = 30;
 let questionIndex = 0;
 const questionsArr = [
   {
@@ -123,6 +123,7 @@ var answerContainer = document.createElement("ol");
 let questionContainer = document.createElement("div");
 const startAgainBtn = document.createElement("button");
 const initialsAlert = document.createElement("h4");
+scoreBoardTitle = document.createElement("h3");
 
 const startQuiz = function () {
   questionIndex = 0;
@@ -134,12 +135,9 @@ const startQuiz = function () {
     time.textContent = `Time: ${counter}`;
     if (counter > 0) {
       counter--;
-    } else if (counter == 0) {
+    } else if (counter <= 0) {
+      time.textContent = `Time: 0`;
       clearInterval(countdown);
-      const timeoutMsg = document.createElement("h3");
-      timeoutMsg.textContent = "You're out of time!";
-      quizContainer.appendChild(timeoutMsg);
-
       endGame();
     }
   }, 1000);
@@ -210,17 +208,23 @@ function performCheck(event) {
 const endGame = function () {
   // stop timer
   clearInterval(countdown);
-  // TODO set a conditional for when player loses - out of time
-
-  // remove question and answers
   questionBox.textContent = "";
   allAnswers.remove();
-  // display current score
   currScore = counter;
-  let endMessage = document.createElement("h3");
-  endMessage.textContent = `Game Over. Your score is ${counter}. See if you made it to the top 10 scores. `;
+  let endMessage = document.createElement("h4");
   questionBox.appendChild(endMessage);
+
+  if (counter <= 0) {
+    // counter.textContent = "0";
+    endMessage.textContent = `Game Over. Your score is 0. You don't make the scoreboard! `;
+  } else {
+    // remove question and answers
+    // display current score
+    endMessage.textContent = `Game Over. Your score is ${counter}. Checkout the Scoreboard to see it you made it! `;
+  }
+
   getUserInitials();
+  startAgain();
 };
 
 const saveScore = function () {
@@ -228,19 +232,15 @@ const saveScore = function () {
     initials: userInput.value,
     score: currScore,
   };
-  // BUG score saved to array automatically + on user save. when score object is taken out to global scope the code breaks.
-
   // BUG not executing condition
   //   if (!userInput.textContent) {
   //     initialsAlert.textContent = "Please type your initials";
   //     quizContainer.appendChild(initialsAlert);
-  //   } else {
+  //   } else if (userInput.textContent) {
   scores.push(score);
   localStorage.setItem("scores", JSON.stringify(scores));
-
-  // TODO clear form
-
   startAgain();
+  loadHighscore();
   //   }
 };
 
@@ -256,27 +256,23 @@ const getUserInitials = function () {
     userInitials.classList.remove("hidden");
     userInitials.classList.add("visible");
   }
-
-  saveScore();
 };
 
 const loadHighscore = function () {
-  // BUG "view highscores" disappears on click
   console.log("high scores clicked!");
   // clear the quizContainer
   title.remove();
   questionContainer.remove();
   answerContainer.remove();
   userInitials.remove();
+  //   questionBox.remove();
 
-  // TODO get scores from localStorage + display
+  scoreTitle.appendChild(scoreBoardTitle);
+  // get scores from localStorage + display
   let scoresParsed = JSON.parse(localStorage.getItem("scores"));
   console.log(scoresParsed);
 
-  scoreBoardTitle = document.querySelector("h3");
-  scoreBoardTitle.textContent = "";
-  scoreTitle.appendChild(scoreBoardTitle);
-
+  // BUG generates multiple elements!
   if (!scoresParsed) {
     scoreBoardTitle.textContent =
       "There are no scores yet, you are the first player!";
@@ -284,20 +280,22 @@ const loadHighscore = function () {
     startBtn.textContent = "Start Quiz";
     scoreBoard.appendChild(startBtn);
   } else {
-    scoreBoardTitle.textContent = "These are the top scores:";
+    scoreBoardTitle.textContent = "Top Scores:";
     for (let i = 0; i < scores.length; i++) {
       const scoreDiv = document.createElement("div");
       scoreDiv.className = "score-div";
       scoresInfo.appendChild(scoreDiv);
       let scoreName = document.createElement("p");
       scoreName.className = "score-name";
-      scoreName.textContent = scores[i].initials;
       scoreDiv.appendChild(scoreName);
       let scoreNum = document.createElement("span");
+      scoreName.textContent = scores[i].initials;
       scoreNum.textContent = scores[i].score;
       scoreDiv.appendChild(scoreNum);
     }
   }
+  startBtn.textContent = "Start Quiz";
+  scoreBoard.appendChild(startBtn);
 };
 
 startBtn.addEventListener("click", startQuiz);
