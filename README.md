@@ -20,7 +20,8 @@ THEN I can save my initials and score
 
 ## Screenshots
 
+![image](https://user-images.githubusercontent.com/80355222/150603616-3d9f8d78-9caa-4312-8a7c-b0ecca4d34c9.png)
 
 
 ## Link to live deployment
-
+https://hadasss.github.io/coding-quiz/
